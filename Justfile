@@ -15,8 +15,8 @@ default_variant := "main"
 
 # Reused Values
 
-org := "jcooter"
-repo := "ublue-main"
+org := "ublue-os"
+repo := "main"
 IMAGE_REGISTRY := "ghcr.io" / org
 
 # Upstream
