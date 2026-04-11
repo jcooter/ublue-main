@@ -245,7 +245,7 @@ gen-tags $image_name="" $fedora_version="" $variant="":
     TIMESTAMP="$(date +%Y%m%d)"
     LIST_TAGS="$(mktemp)"
     while [[ ! -s "$LIST_TAGS" ]]; do
-        skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
+        skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS" || true
     done
     if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP\"))") == "true" ]]; then
         POINT="1"
