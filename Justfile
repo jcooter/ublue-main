@@ -185,9 +185,9 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 #    done
 
     # Labels
-    skopeo inspect docker://ghcr.io/ublue-os/akmods@$AKMODS_DIGEST
+
     VERSION="$fedora_version.$TIMESTAMP"
-    KERNEL_VERSION="$(skopeo inspect docker://ghcr.io/ublue-os/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
+    KERNEL_VERSION="$(skopeo inspect "docker://ghcr.io/ublue-os/akmods@$AKMODS_DIGEST" | jq -r '.Labels["ostree.linux"]')"
     LABELS=(
         "--label" "org.opencontainers.image.title=${image_name}"
         "--label" "org.opencontainers.image.version=${VERSION}"
@@ -408,7 +408,7 @@ verify-container $container="" $registry="" $key="":
 
     # ublue-os Public Key for Container Verification default
     if [[ -z "${registry:-}" && -z "${key:-}"  ]]; then
-        registry=ghcr.io/ublue-os
+        registry="ghcr.io/ublue-os"
         key="https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub"
     fi
 
