@@ -187,7 +187,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 #    done
 
     # Labels
-
+    TIMESTAMP="$(date +%Y%m%d)"
     VERSION="$fedora_version.$TIMESTAMP"
     KERNEL_VERSION="$(skopeo inspect docker://{{ UBLUE_REGISTRY }}/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
     LABELS=(
