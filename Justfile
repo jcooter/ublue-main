@@ -19,6 +19,8 @@ org := "jcooter"
 repo := "ublue-main"
 IMAGE_REGISTRY := "ghcr.io" / org
 
+UBLUE_REGISTRY := "ghcr.io" / "ublue-os"
+
 # Upstream
 
 [private]
@@ -187,7 +189,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     # Labels
 
     VERSION="$fedora_version.$TIMESTAMP"
-    KERNEL_VERSION="$(skopeo inspect "docker://ghcr.io/ublue-os/akmods@$AKMODS_DIGEST" | jq -r '.Labels["ostree.linux"]')"
+    KERNEL_VERSION="$(skopeo inspect docker://{{ UBLUE_REGISTRY }}/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
     LABELS=(
         "--label" "org.opencontainers.image.title=${image_name}"
         "--label" "org.opencontainers.image.version=${VERSION}"
@@ -217,8 +219,8 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     )
 
     # Pull Images with retry
-    pull-retry "ghcr.io/ublue-os/akmods:main-$fedora_version@$AKMODS_DIGEST"
-    pull-retry "ghcr.io/ublue-os/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
+pull-retry "{{ UBLUE_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
+    pull-retry "{{ UBLUE_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
     pull-retry "{{ source_registry }}/$source_image_name:$fedora_version@$BASE_IMAGE_DIGEST"
 
     # Build Image
@@ -226,8 +228,8 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 
     # CI Cleanup
     if [[ -n "${CI:-}" ]]; then
-        {{ PODMAN }} rmi -f "ghcr.io/ublue-os/akmods:main-$fedora_version@$AKMODS_DIGEST"
-        {{ PODMAN }} rmi -f "ghcr.io/ublue-os/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
+        {{ PODMAN }} rmi -f "{{ UBLUE_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
+        {{ PODMAN }} rmi -f "{{ UBLUE_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
         {{ PODMAN }} rmi -f "{{ source_registry }}/$source_image_name:$fedora_version@$BASE_IMAGE_DIGEST"
     fi
 
@@ -408,7 +410,7 @@ verify-container $container="" $registry="" $key="":
 
     # ublue-os Public Key for Container Verification default
     if [[ -z "${registry:-}" && -z "${key:-}"  ]]; then
-        registry="ghcr.io/ublue-os"
+        registry="{{ UBLUE_REGISTRY }}"
         key="https://raw.githubusercontent.com/ublue-os/main/main/cosign.pub"
     fi
 
