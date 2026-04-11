@@ -174,20 +174,19 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     {{ just }} verify-container "$source_image_name@$BASE_IMAGE_DIGEST" "{{ source_registry }}" "https://gitlab.com/fedora/ostree/ci-test/-/raw/main/quay.io-fedora-ostree-desktops.pub?ref_type=heads"
 
     # Tags
-#    declare -A gen_tags="($({{ just }} gen-tags $image_name $fedora_version $variant))"
-#    if [[ "${github:-}" =~ pull_request ]]; then
-#        tags=(${gen_tags["COMMIT_TAGS"]})
-#    else
-#        tags=(${gen_tags["BUILD_TAGS"]})
-#    fi
-#    TIMESTAMP="${gen_tags["TIMESTAMP"]}"
-#    TAGS=()
-#    for tag in "${tags[@]}"; do
-#        TAGS+=("--tag" "localhost/${image_name}:$tag")
-#    done
+    declare -A gen_tags="($({{ just }} gen-tags $image_name $fedora_version $variant))"
+    if [[ "${github:-}" =~ pull_request ]]; then
+        tags=(${gen_tags["COMMIT_TAGS"]})
+    else
+        tags=(${gen_tags["BUILD_TAGS"]})
+    fi
+    TIMESTAMP="${gen_tags["TIMESTAMP"]}"
+    TAGS=()
+    for tag in "${tags[@]}"; do
+        TAGS+=("--tag" "localhost/${image_name}:$tag")
+    done
 
     # Labels
-    TIMESTAMP="$(date +%Y%m%d)"
     VERSION="$fedora_version.$TIMESTAMP"
     KERNEL_VERSION="$(skopeo inspect docker://{{ UBLUE_REGISTRY }}/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
     LABELS=(
