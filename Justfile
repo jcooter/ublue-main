@@ -164,6 +164,8 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     AKMODS_NVIDIA_DIGEST="$(yq -r ".images[] | select(.name == \"akmods-nvidia-open-${fedora_version}\") | .digest" {{ image-file }})"
     BASE_IMAGE_DIGEST="$(yq -r ".images[] | select(.name == \"${source_image_name}-${fedora_version}\") | .digest" {{ image-file }})"
 
+    echo $AKMODS_DIGEST
+
     # Verify Source Containers
     {{ just }} verify-container "akmods@$AKMODS_DIGEST"
     {{ just }} verify-container "akmods-nvidia-open@$AKMODS_NVIDIA_DIGEST"
@@ -183,6 +185,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
 #    done
 
     # Labels
+    skopeo inspect docker://ghcr.io/ublue-os/akmods@$AKMODS_DIGEST
     VERSION="$fedora_version.$TIMESTAMP"
     KERNEL_VERSION="$(skopeo inspect docker://ghcr.io/ublue-os/akmods@$AKMODS_DIGEST | jq -r '.Labels["ostree.linux"]')"
     LABELS=(
