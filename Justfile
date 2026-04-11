@@ -170,17 +170,17 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     {{ just }} verify-container "$source_image_name@$BASE_IMAGE_DIGEST" "{{ source_registry }}" "https://gitlab.com/fedora/ostree/ci-test/-/raw/main/quay.io-fedora-ostree-desktops.pub?ref_type=heads"
 
     # Tags
-    declare -A gen_tags="($({{ just }} gen-tags $image_name $fedora_version $variant))"
-    if [[ "${github:-}" =~ pull_request ]]; then
-        tags=(${gen_tags["COMMIT_TAGS"]})
-    else
-        tags=(${gen_tags["BUILD_TAGS"]})
-    fi
-    TIMESTAMP="${gen_tags["TIMESTAMP"]}"
-    TAGS=()
-    for tag in "${tags[@]}"; do
-        TAGS+=("--tag" "localhost/${image_name}:$tag")
-    done
+#    declare -A gen_tags="($({{ just }} gen-tags $image_name $fedora_version $variant))"
+#    if [[ "${github:-}" =~ pull_request ]]; then
+#        tags=(${gen_tags["COMMIT_TAGS"]})
+#    else
+#        tags=(${gen_tags["BUILD_TAGS"]})
+#    fi
+#    TIMESTAMP="${gen_tags["TIMESTAMP"]}"
+#    TAGS=()
+#    for tag in "${tags[@]}"; do
+#        TAGS+=("--tag" "localhost/${image_name}:$tag")
+#    done
 
     # Labels
     VERSION="$fedora_version.$TIMESTAMP"
@@ -240,9 +240,9 @@ gen-tags $image_name="" $fedora_version="" $variant="":
     # Generate Timestamp with incrementing version point
     TIMESTAMP="$(date +%Y%m%d)"
     LIST_TAGS="$(mktemp)"
-#    while [[ ! -s "$LIST_TAGS" ]]; do
-#        skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
-#    done
+    while [[ ! -s "$LIST_TAGS" ]]; do
+        skopeo list-tags docker://{{ IMAGE_REGISTRY }}/$image_name > "$LIST_TAGS"
+    done
     if [[ $(cat "$LIST_TAGS" | jq "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP\"))") == "true" ]]; then
         POINT="1"
         while $(cat "$LIST_TAGS" | jq -e "any(.Tags[]; contains(\"$fedora_version-$TIMESTAMP.$POINT\"))")
