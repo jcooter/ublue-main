@@ -15,8 +15,8 @@ default_variant := "main"
 
 # Reused Values
 
-org := "ublue-os"
-repo := "main"
+org := "jcooter"
+repo := "ublue-main"
 IMAGE_REGISTRY := "ghcr.io" / org
 
 # Upstream
@@ -37,6 +37,7 @@ images := '(
     ["base"]="base-atomic"
     ["silverblue"]="silverblue"
     ["kinoite"]="kinoite"
+    ["cosmic"]="cosmic-atomic"
 )'
 
 # Fedora Versions
