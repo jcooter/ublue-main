@@ -218,7 +218,7 @@ build-container $image_name="" $fedora_version="" $variant="" $github="":
     )
 
     # Pull Images with retry
-pull-retry "{{ UBLUE_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
+    pull-retry "{{ UBLUE_REGISTRY }}/akmods:main-$fedora_version@$AKMODS_DIGEST"
     pull-retry "{{ UBLUE_REGISTRY }}/akmods-nvidia-open:main-$fedora_version@$AKMODS_NVIDIA_DIGEST"
     pull-retry "{{ source_registry }}/$source_image_name:$fedora_version@$BASE_IMAGE_DIGEST"
 
