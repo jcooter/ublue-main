@@ -10,9 +10,21 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
+      - name: Get token
+        id: get_token
+        uses: tibdex/github-app-token@021a2405c7f990db57f5eae5397423dcc554159c
+        with:
+          app_id: ${{ secrets.RENOVATE_APP_ID }}
+          installation_id: ${{ secrets.RENOVATE_INSTALL_ID }}
+          private_key: ${{ secrets.RENOVATE_PRIVATE_KEY }}
       - name: Self-hosted Renovate
         uses: renovatebot/github-action@v46.1.11
+        env:
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+          RENOVATE_ONBOARDING: "false"
+          RENOVATE_USERNAME: "jcooter-renovate[bot]"
+          RENOVATE_GIT_AUTHOR: "jcooter-renovate <3537147+jcooter-renovate[bot]@users.noreply.github.com>"
+          RENOVATE_PLATFORM_COMMIT: "true"
         with:
           config: .github/renovate.json5
-          token: ${{ secrets.RENOVATE_TOKEN }}
+          token: ${{ steps.get_token.outputs.token }}
