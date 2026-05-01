@@ -25,6 +25,7 @@ jobs:
           RENOVATE_USERNAME: "jcooter-renovate[bot]"
           RENOVATE_GIT_AUTHOR: "jcooter-renovate <3537147+jcooter-renovate[bot]@users.noreply.github.com>"
           RENOVATE_PLATFORM_COMMIT: "true"
+          LOG_LEVEL: debug
         with:
           config: .github/renovate.json5
           token: ${{ steps.get_token.outputs.token }}
