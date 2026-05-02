@@ -1,77 +1,77 @@
 {
-	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": [
-		"config:best-practices"
+	$schema: 'https://docs.renovatebot.com/renovate-schema.json',
+	extends: [
+		'config:best-practices',
 	],
-	"customManagers": [
+	customManagers: [
 		{
-			"customType": "regex",
-			"fileMatch": [
-				"^image-versions\\.yaml$"
+			customType: 'regex',
+			managerFilePatterns: [
+				'/^image-versions\\.yaml$/',
 			],
-			"matchStrings": [
-				"image:\\s+(?<depName>\\S+)\\n\\s+tag:\\s+(?<currentValue>\\S+)\\n\\s+digest:\\s+(?<currentDigest>sha256:\\S+)"
+			matchStrings: [
+				'image:\\s+(?<depName>\\S+)\\n\\s+tag:\\s+(?<currentValue>\\S+)\\n\\s+digest:\\s+(?<currentDigest>sha256:\\S+)',
 			],
-			"datasourceTemplate": "docker"
-		}
+			datasourceTemplate: 'docker',
+		},
 	],
-	"packageRules": [
+	packageRules: [
 		{
-			"automerge": true,
-			"matchUpdateTypes": [
-				"pin",
-				"pinDigest"
-			]
+			automerge: true,
+			matchUpdateTypes: [
+				'pin',
+				'pinDigest',
+			],
 		},
 		{
-			"enabled": false,
-			"matchUpdateTypes": [
-				"digest",
-				"pinDigest",
-				"pin"
+			enabled: false,
+			matchUpdateTypes: [
+				'digest',
+				'pinDigest',
+				'pin',
 			],
-			"matchDepTypes": [
-				"container"
+			matchDepTypes: [
+				'container',
 			],
-			"matchFileNames": [
-				".github/workflows/**.yaml",
-				".github/workflows/**.yml",
-				".devcontainer/Containerfile"
-			]
+			matchFileNames: [
+				'.github/workflows/**.yaml',
+				'.github/workflows/**.yml',
+				'.devcontainer/Containerfile',
+			],
 		},
 		{
-			"matchPackageNames": [
-				"quay.io/fedora-ostree-desktops/*",
-				"ghcr.io/ublue-os/akmods",
-				"ghcr.io/ublue-os/akmods-nvidia-open"
+			matchPackageNames: [
+				'quay.io/fedora-ostree-desktops/*',
+				'ghcr.io/ublue-os/akmods',
+				'ghcr.io/ublue-os/akmods-nvidia-open',
 			],
-			"groupName": "images",
-			"matchUpdateTypes": [
-				"digest"
+			groupName: 'images',
+			matchUpdateTypes: [
+				'digest',
 			],
-			"automerge": true
+			automerge: true,
 		},
 		{
-			"matchPackageNames": [
-				"quay.io/fedora-ostree-desktops/*",
-				"ghcr.io/ublue-os/akmods",
-				"ghcr.io/ublue-os/akmods-nvidia-open"
+			matchPackageNames: [
+				'quay.io/fedora-ostree-desktops/*',
+				'ghcr.io/ublue-os/akmods',
+				'ghcr.io/ublue-os/akmods-nvidia-open',
 			],
-			"matchUpdateTypes": [
-				"major",
-				"minor",
-				"patch"
+			matchUpdateTypes: [
+				'major',
+				'minor',
+				'patch',
 			],
-			"enabled": false
+			enabled: false,
 		},
 		{
-			"matchPackageNames": [
-				"quay.io/fedora/fedora"
+			matchPackageNames: [
+				'quay.io/fedora/fedora',
 			],
-			"matchFileNames": [
-				".devcontainer/Containerfile"
+			matchFileNames: [
+				'.devcontainer/Containerfile',
 			],
-			"enabled": false
-		}
-	]
+			enabled: false,
+		},
+	],
 }
