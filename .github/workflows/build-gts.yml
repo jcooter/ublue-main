@@ -1,8 +1,8 @@
 name: ublue gts
 
 on:
-  pull_request:
-  merge_group:
+  #pull_request:
+  #merge_group:
   workflow_dispatch:
 
 concurrency:
